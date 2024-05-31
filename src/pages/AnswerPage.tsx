@@ -57,7 +57,7 @@ export default function AnswerPage() {
     <div className="min-h-screen bg-gray-100">
       <NavBar className="fixed top-0 w-full z-20 h-[51px]" />
       <div className="pt-16 flex flex-col items-center">
-        <h1 className="text-2xl font-bold my-4">Answer pages</h1>
+        <h1 className="text-2xl font-bold my-4">WITHI에게 물어봐요</h1>
         <div className="w-3/4 bg-white p-4 border border-gray-300 rounded-lg shadow-lg">
           <input
             type="file"
@@ -68,12 +68,14 @@ export default function AnswerPage() {
                        file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
           {file && (
-            <div>
-              <img
-                src={URL.createObjectURL(file)}
-                alt="Uploaded"
-                className="max-w-full h-auto rounded-md"
-              />
+            <div className="flex flex-col items-center">
+              <div className="w-full h-60 bg-gray-200 flex items-center justify-center">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="Uploaded"
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
               <button
                 onClick={handleSolveQuestions}
                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

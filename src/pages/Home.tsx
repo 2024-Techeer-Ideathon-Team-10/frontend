@@ -34,7 +34,7 @@ export default function Home() {
       <style>{cloudAnimation}</style>
       <NavBar className="fixed top-0 w-full z-20" />
 
-      <div className="text-4xl font-semibold mt-20">
+      <div className="text-4xl font-semibold mt-32">
         모르는 문제는 WITHI에게 질문하세요!
       </div>
       <div className="flex flex-col justify-end items-center w-full h-full">
@@ -50,7 +50,7 @@ export default function Home() {
           />
         </div>
         {/* 검은색 배경 div와 폰 이미지 */}
-        <div className="relative">
+        <div className="relative z-10">
           <div
             style={{
               width: "420px",
@@ -59,27 +59,30 @@ export default function Home() {
               position: "absolute",
               top: "15px",
               left: "15px",
-              zIndex: 1,
+              zIndex: 1, // Phone 뒤에 위치하도록 설정
             }}
           ></div>
           <img
             src={Phone}
             alt="Phone"
-            style={{ width: "450px", height: "550px", objectFit: "contain" }}
+            className="relative z-20" // Phone을 배경 위로 올리기 위해 z-20 설정
+            style={{
+              width: "450px",
+              height: "550px",
+              objectFit: "contain",
+            }}
           />
           {/* PlayBtn SVG */}
           <img
             src={PlayBtn}
             alt="Play Button"
+            className="absolute z-30 cursor-pointer" // PlayBtn을 최상단으로 설정
             style={{
               width: "150px",
               height: "150px",
-              position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              zIndex: 2,
-              cursor: "pointer",
             }}
             onClick={handleClick}
           />
