@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "../src/pages/Home";
-import Select from "./pages/SelectPage";
+import Answer from "./pages/AnswerPage";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/select" element={<Select />} />
+          <Route path="/answer" element={<Answer />} />
         </Routes>
       </div>
     </Router>
