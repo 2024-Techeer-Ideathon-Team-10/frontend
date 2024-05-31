@@ -1,7 +1,7 @@
 import React from "react";
 
-function MockList() {
+function ProblemMockList() {
   return <div>MockList</div>;
 }
 
-export default MockList;
+export default ProblemMockList;
