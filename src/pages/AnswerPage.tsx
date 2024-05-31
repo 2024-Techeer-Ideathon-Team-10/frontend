@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import NavBar from "./components/NavBar";
+import LoadingModal from "./components/LoadingModal"; // 모달 컴포넌트를 임포트
 
 interface QuestionResponse {
   id: number;
   base64Image: string;
-  answer: string; // 직접 화면에 출력할 문자열
-  solution: string; // 직접 화면에 출력할 문자열
+  answer: string;
+  solution: string;
 }
 
 export default function SelectPage() {
   const [file, setFile] = useState<File | null>(null);
   const [response, setResponse] = useState<QuestionResponse | null>(null);
+  const [loading, setLoading] = useState(false); // 로딩 상태를 관리하는 상태 변수
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -24,6 +26,7 @@ export default function SelectPage() {
   const handleSolveQuestions = async () => {
     if (!file) return;
 
+    setLoading(true); // API 요청 전에 로딩 상태를 true로 설정
     const formData = new FormData();
     formData.append("file", file);
 
@@ -35,11 +38,10 @@ export default function SelectPage() {
       if (!postResponse.ok) {
         throw new Error(`HTTP error! status: ${postResponse.status}`);
       }
-      const result = await postResponse.json(); // 서버로부터 JSON 형식의 응답 받음
-      console.log("Server Response:", result); // 로그에 서버 응답 출력
+      const result = await postResponse.json();
+      console.log("Server Response:", result);
 
       if (result.status === 200 && result.response) {
-        // 서버 응답을 직접 상태에 저장
         setResponse(result.response);
       } else {
         throw new Error("Invalid server response");
@@ -48,12 +50,12 @@ export default function SelectPage() {
       console.error("Error fetching questions:", error);
       setResponse(null);
     }
+    setLoading(false); // API 요청 완료 후 로딩 상태를 false로 설정
   };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <NavBar className="fixed top-0 w-full z-20 h-[51px]" />
-
       <div className="pt-16 flex flex-col items-center">
         <h1 className="text-2xl font-bold my-4">Answer pages</h1>
         <input
@@ -77,6 +79,7 @@ export default function SelectPage() {
             </button>
           </div>
         )}
+        {loading && <LoadingModal />}
         {response && (
           <div className="mt-4">
             <h2 className="text-lg font-bold">Responses:</h2>
