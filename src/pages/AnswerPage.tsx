@@ -4,18 +4,18 @@ import NavBar from "./components/NavBar";
 interface QuestionResponse {
   id: number;
   base64Image: string;
-  answer: string;
-  solution: string;
+  answer: string; // 직접 화면에 출력할 문자열
+  solution: string; // 직접 화면에 출력할 문자열
 }
 
 export default function SelectPage() {
-  const [file, setFile] = useState<File | null>(null); // 파일 객체를 저장할 상태
-  const [response, setResponse] = useState<QuestionResponse[] | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [response, setResponse] = useState<QuestionResponse | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file && file.type.substr(0, 5) === "image") {
-      setFile(file); // 파일 객체를 상태에 저장
+      setFile(file);
     } else {
       setFile(null);
     }
@@ -25,15 +25,25 @@ export default function SelectPage() {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("file", file); // 'file' 키로 파일 객체 추가
+    formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8000/questions", {
+      const postResponse = await fetch("http://localhost:8000/questions", {
         method: "POST",
         body: formData,
       });
-      const data = await response.json();
-      setResponse(data);
+      if (!postResponse.ok) {
+        throw new Error(`HTTP error! status: ${postResponse.status}`);
+      }
+      const result = await postResponse.json(); // 서버로부터 JSON 형식의 응답 받음
+      console.log("Server Response:", result); // 로그에 서버 응답 출력
+
+      if (result.status === 200 && result.response) {
+        // 서버 응답을 직접 상태에 저장
+        setResponse(result.response);
+      } else {
+        throw new Error("Invalid server response");
+      }
     } catch (error) {
       console.error("Error fetching questions:", error);
       setResponse(null);
@@ -70,12 +80,14 @@ export default function SelectPage() {
         {response && (
           <div className="mt-4">
             <h2 className="text-lg font-bold">Responses:</h2>
-            {response.map((res) => (
-              <div key={res.id}>
-                <p>{res.answer}</p>
-                <p>{res.solution}</p>
-              </div>
-            ))}
+            <div>
+              <p>
+                <strong>Answer:</strong> {response.answer}
+              </p>
+              <p>
+                <strong>Solution:</strong> {response.solution}
+              </p>
+            </div>
           </div>
         )}
       </div>
