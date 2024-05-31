@@ -1,10 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Cloud from "./../assets/svg/Cloud.svg";
 import Phone from "./../assets/svg/Phone.svg";
 import PlayBtn from "./../assets/svg/PlayBtn.svg";
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/answer"); // /answer 경로로 이동합니다.
+  };
+
   const cloudAnimation = `
     @keyframes float {
       0%, 100% {
@@ -43,7 +50,7 @@ export default function Home() {
           />
         </div>
         {/* 검은색 배경 div와 폰 이미지 */}
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-auto z-10">
+        <div className="relative">
           <div
             style={{
               width: "420px",
@@ -52,28 +59,29 @@ export default function Home() {
               position: "absolute",
               top: "15px",
               left: "15px",
-              zIndex: -1,
+              zIndex: 1,
             }}
-          >
-            {/* PlayBtn SVG */}
-            <img
-              src={PlayBtn}
-              alt="Play Button"
-              style={{
-                width: "150px", // Play 버튼의 크기 조정
-                height: "150px", // Play 버튼의 크기 조정
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                zIndex: 2, // zIndex를 1에서 2로 증가하여 흰색 원 위에 나타나도록 조정
-              }}
-            />
-          </div>
+          ></div>
           <img
             src={Phone}
             alt="Phone"
             style={{ width: "450px", height: "550px", objectFit: "contain" }}
+          />
+          {/* PlayBtn SVG */}
+          <img
+            src={PlayBtn}
+            alt="Play Button"
+            style={{
+              width: "150px",
+              height: "150px",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 2,
+              cursor: "pointer",
+            }}
+            onClick={handleClick}
           />
         </div>
       </div>
